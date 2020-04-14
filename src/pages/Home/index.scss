@@ -5,26 +5,30 @@
     bottom: 0;
     width: 100%;
     z-index: 999;
-    ul {
-      display: flex;
-      li {
-        padding: 5px 0;
-        flex: 1;
-        height: 50px;
-        text-align: center;
-        font-size: 12px;
-        a {
-          text-decoration: none;
-          color: #333;
-          display: block;
-          .iconfont {
-            font-size: 18px;
-          }
-        }
-        .active {
-          color: #42c38e;
-        }
-      }
+
+    .iconfont {
+      font-size: 20px;
     }
+    // ul {
+    //   display: flex;
+    //   li {
+    //     padding: 5px 0;
+    //     flex: 1;
+    //     height: 50px;
+    //     text-align: center;
+    //     font-size: 12px;
+    //     a {
+    //       text-decoration: none;
+    //       color: #333;
+    //       display: block;
+    //       .iconfont {
+    //         font-size: 18px;
+    //       }
+    //     }
+    //     .active {
+    //       color: #42c38e;
+    //     }
+    //   }
+    // }
   }
 }
