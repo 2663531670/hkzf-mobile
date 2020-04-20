@@ -1,21 +1,54 @@
 import React from 'react'
 import { Route, NavLink, Switch } from 'react-router-dom'
 import { TabBar } from 'antd-mobile'
-
-import 'antd-mobile/dist/antd-mobile.css'
 import './index.scss'
 import Index from './Index/index'
 import House from './House'
 import Profile from './Profile'
 import News from './News'
 import NoMatch from '../NoMatch'
+const tabBar = [
+  { title: '首页', icon: 'icon-ind', path: '/home' },
+  { title: '找房', icon: 'icon-findHouse', path: '/home/house' },
+  { title: '资讯', icon: 'icon-infom', path: '/home/news' },
+  { title: '我的', icon: 'icon-my', path: '/home/profile' }
+]
 class Home extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       // 用于设置默认选中的标签栏
-      selectedTab: 'blueTab'
+      selectedTab: this.props.location.pathname
     }
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.location.pathname !== this.props.location.pathname) {
+      this.setState({
+        selectedTab: this.props.location.pathname
+      })
+    }
+  }
+  tabItem() {
+    return (
+      <TabBar
+        unselectedTintColor="#949494"
+        tintColor="#42c38e"
+        barTintColor="white"
+      >
+        {tabBar.map(item => (
+          <TabBar.Item
+            title={item.title}
+            key={item.title}
+            icon={<span className={'iconfont ' + item.icon}></span>}
+            selectedIcon={<span className={'iconfont ' + item.icon}></span>}
+            selected={this.state.selectedTab === item.path}
+            onPress={() => {
+              this.props.history.push(item.path)
+            }}
+          ></TabBar.Item>
+        ))}
+      </TabBar>
+    )
   }
   render() {
     return (
@@ -29,66 +62,7 @@ class Home extends React.Component {
           <Route component={NoMatch}></Route>
         </Switch>
 
-        <div className="tabBar">
-          <TabBar
-            unselectedTintColor="#949494"
-            tintColor="#42c38e"
-            barTintColor="white"
-          >
-            <TabBar.Item
-              title="首页"
-              key="首页"
-              icon={<span className="iconfont icon-ind"></span>}
-              selectedIcon={<span className="iconfont icon-ind"></span>}
-              selected={this.state.selectedTab === 'blueTab'}
-              onPress={() => {
-                this.setState({
-                  selectedTab: 'blueTab'
-                })
-                this.props.history.push('/home')
-              }}
-            ></TabBar.Item>
-            <TabBar.Item
-              icon={<span className="iconfont icon-findHouse"></span>}
-              selectedIcon={<span className="iconfont icon-findHouse"></span>}
-              title="找房"
-              key="找房"
-              selected={this.state.selectedTab === 'redTab'}
-              onPress={() => {
-                this.setState({
-                  selectedTab: 'redTab'
-                })
-                this.props.history.push('/home/house')
-              }}
-            ></TabBar.Item>
-            <TabBar.Item
-              icon={<span className="iconfont icon-infom"></span>}
-              selectedIcon={<span className="iconfont icon-infom"></span>}
-              title="资讯"
-              key="资讯"
-              selected={this.state.selectedTab === 'greenTab'}
-              onPress={() => {
-                this.setState({
-                  selectedTab: 'greenTab'
-                })
-                this.props.history.push('/home/news')
-              }}
-            ></TabBar.Item>
-            <TabBar.Item
-              icon={<span className="iconfont icon-my"></span>}
-              selectedIcon={<span className="iconfont icon-my"></span>}
-              title="我的"
-              key="我的"
-              selected={this.state.selectedTab === 'yellowTab'}
-              onPress={() => {
-                this.setState({
-                  selectedTab: 'yellowTab'
-                })
-                this.props.history.push('/home/profile')
-              }}
-            ></TabBar.Item>
-          </TabBar>
-        </div>
+        <div className="tabBar">{this.tabItem()}</div>
       </div>
     )
   }
