@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, NavLink, Switch } from 'react-router-dom'
 import { TabBar } from 'antd-mobile'
-import './index.scss'
+import styles from './index.module.scss'
 import Index from './Index/index'
 import House from './House'
 import Profile from './Profile'
@@ -52,7 +52,7 @@ class Home extends React.Component {
   }
   render() {
     return (
-      <div className="home">
+      <div className={styles.home}>
         {/* 路由规则 */}
         <Switch>
           <Route path="/home" exact component={Index}></Route>

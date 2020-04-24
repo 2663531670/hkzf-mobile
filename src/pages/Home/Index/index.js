@@ -5,9 +5,9 @@ import nav1 from 'assets/images/nav-1.png'
 import nav2 from 'assets/images/nav-2.png'
 import nav3 from 'assets/images/nav-3.png'
 import nav4 from 'assets/images/nav-4.png'
-import './index.scss'
+import styles from './index.module.scss'
 import { getCurrentCity } from 'utils/current_city'
-
+import { BASE_URL } from 'utils/config'
 const navList = [
   { path: '/home/house', icon: nav1, title: '整租' },
   { path: '/home/house', icon: nav2, title: '合租' },
@@ -29,6 +29,7 @@ class Index extends React.Component {
   async componentDidMount() {
     //  发送请求，获取轮播图数据
     this.getSwipers()
+    console.log(BASE_URL)
 
     // 获取当前城市（Ip定位）
 
@@ -52,34 +53,8 @@ class Index extends React.Component {
         this.getGroups()
         // 发送请求，获取最新资讯数据
         this.getNews()
-        console.log(this.state.currentCity)
       }
     )
-
-    // (百度地图获取当前城市)
-    // var myCity = new window.BMap.LocalCity()
-    // myCity.get(async result => {
-    //   const res = await axios.get('http://localhost:8080/area/info', {
-    //     params: {
-    //       name: result.name
-    //     }
-    //   })
-    //   const { status, body } = res.data
-    //   if (status === 200) {
-    //     localStorage.setItem('current_city', JSON.stringify(body))
-    //     this.setState(
-    //       {
-    //         currentCity: body
-    //       },
-    //       () => {
-    //         // 发送请求，获取租房小组数据
-    //         this.getGroups()
-    //         // 发送请求，获取最新资讯数据
-    //         this.getNews()
-    //       }
-    //     )
-    //   }
-    // })
   }
 
   getSwipers() {
@@ -147,7 +122,7 @@ class Index extends React.Component {
             }}
           >
             <img
-              src={`http://localhost:8080${item.imgSrc}`}
+              src={`${BASE_URL + item.imgSrc}`}
               alt=""
               style={{ width: '100%', verticalAlign: 'top' }}
               onLoad={() => {
@@ -182,7 +157,7 @@ class Index extends React.Component {
                   <p className="title">{el.title}</p>
                   <span className="info">{el.desc}</span>
                 </div>
-                <img src={'http://localhost:8080' + el.imgSrc} alt="" />
+                <img src={BASE_URL + el.imgSrc} alt="" />
               </Flex>
             )}
           />
@@ -197,11 +172,7 @@ class Index extends React.Component {
         {this.state.newsList.map(item => (
           <div className="news-item" key={item.id}>
             <div className="imgwrap">
-              <img
-                className="img"
-                src={'http://localhost:8080' + item.imgSrc}
-                alt=""
-              />
+              <img className="img" src={BASE_URL + item.imgSrc} alt="" />
             </div>
             <Flex className="content" direction="column" justify="between">
               <h3 className="title">{item.title}</h3>
@@ -234,7 +205,10 @@ class Index extends React.Component {
           </div>
         </Flex>
         {/* 地图小图标 */}
-        <i className="iconfont icon-map" />
+        <i
+          className="iconfont icon-map"
+          onClick={() => this.props.history.push('/map')}
+        />
       </Flex>
     )
   }
@@ -256,7 +230,7 @@ class Index extends React.Component {
 
   render() {
     return (
-      <div className="index">
+      <div className={styles.index}>
         {/* 轮播图 */}
         <div className="carousel" style={{ height: this.state.imgHeight }}>
           {this.renderSearch()}

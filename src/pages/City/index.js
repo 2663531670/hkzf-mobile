@@ -1,10 +1,10 @@
 import React from 'react'
 import axios from 'axios'
-import './index.scss'
-import { NavBar, Icon, Toast } from 'antd-mobile'
+import styles from './index.module.scss'
+import { Toast } from 'antd-mobile'
+import NavHeader from 'common/NavHeader'
 import { getCurrentCity, setCity } from 'utils/current_city'
 import { AutoSizer, List } from 'react-virtualized'
-import Item from 'antd-mobile/lib/popover/Item'
 
 const TITLE_HEIGHT = 36
 const CITY_HEIGHT = 50
@@ -126,44 +126,44 @@ class City extends React.Component {
   }
   render() {
     return (
-      <div className="city">
-        <NavBar
-          mode="Dark"
-          icon={<Icon type="left" />}
-          onLeftClick={() => this.props.history.go(-1)}
-        >
-          城市选择
-        </NavBar>
+      <div className={styles.city}>
+        <NavHeader>城市选择</NavHeader>
         {/* 城市列表渲染 */}
-        <AutoSizer>
-          {({ height, width }) => (
-            <List
-              width={width}
-              height={height}
-              rowCount={this.state.cityArr.length}
-              rowHeight={this.calcHeight.bind(this)}
-              rowRenderer={this.rowRenderer.bind(this)}
-              onRowsRendered={this.onRowsRendered.bind(this)}
-              scrollToAlignment="start"
-              ref={this.ListRef}
-            />
-          )}
-        </AutoSizer>
-        {/* 右侧快捷导航栏 */}
-        <ul className="city-index">
-          {this.state.cityArr.map((item, index) => (
-            <li key={item} className="city-index-item">
-              <span
-                onClick={this.handleClick.bind(this, index)}
-                className={
-                  index === this.state.currentIndex ? 'index-active' : ''
-                }
-              >
-                {item === 'hot' ? '热' : item.toUpperCase()}
-              </span>
-            </li>
-          ))}
-        </ul>
+        {this.state.cityArr.length > 0 ? (
+          <div className="cityList">
+            <AutoSizer>
+              {({ height, width }) => (
+                <List
+                  width={width}
+                  height={height}
+                  rowCount={this.state.cityArr.length}
+                  rowHeight={this.calcHeight.bind(this)}
+                  rowRenderer={this.rowRenderer.bind(this)}
+                  onRowsRendered={this.onRowsRendered.bind(this)}
+                  scrollToAlignment="start"
+                  ref={this.ListRef}
+                />
+              )}
+            </AutoSizer>
+            {/* 右侧快捷导航栏 */}
+            <ul className="city-index">
+              {this.state.cityArr.map((item, index) => (
+                <li key={item} className="city-index-item">
+                  <span
+                    onClick={this.handleClick.bind(this, index)}
+                    className={
+                      index === this.state.currentIndex ? 'index-active' : ''
+                    }
+                  >
+                    {item === 'hot' ? '热' : item.toUpperCase()}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <div className="loading">加载中....</div>
+        )}
       </div>
     )
   }
